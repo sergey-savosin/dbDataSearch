@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace dbDataSearch
 {
-    public partial class Form1 : Form
+    public partial class FormMain : ComponentFactory.Krypton.Toolkit.KryptonForm
     {
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
         }
