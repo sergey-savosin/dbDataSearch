@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace dbDataSearch.Contracts
 {
-    interface IRepository
+    public interface IRepository
     {
         List<string> GetAllConnectionNames();
         ConnectionDetails GetConnectionDetails(string connectionName);
+        List<IEntity> GetAllRootEntities();
     }
 }

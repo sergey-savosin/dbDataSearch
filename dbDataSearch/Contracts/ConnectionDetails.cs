@@ -10,5 +10,8 @@ namespace dbDataSearch.Contracts
     {
         public string ConnectionName;
         public string ServerName;
+        public string DatabaseName;
+        //ToDo:
+        //public string ConnectionColor;
     }
 }
