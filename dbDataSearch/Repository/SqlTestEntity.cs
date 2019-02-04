@@ -10,38 +10,40 @@ namespace dbDataSearch.Repository
 {
     public class SqlTestEntity : IEntity
     {
-        SqlRunner sqlRunner;
+        SqlServerRepository repository;
+        readonly string entityName = "TestEntity";
 
         public SqlTestEntity(ConnectionDetails connectionDetails)
         {
-            sqlRunner = new SqlRunner(connectionDetails);
+            repository = new SqlServerRepository(connectionDetails);
         }
 
-        public List<FindResultSimplePair> FindByString(string strValue)
+        public List<FindAllResult> FindByString(string strValue)
         {
-            SqlServerRepository repository = new SqlServerRepository(sqlRunner);
             DataTable testData = repository.GetTestData();
 
-            List<FindResultSimplePair> result = new List<FindResultSimplePair>();
+            List<FindAllResult> result = new List<FindAllResult>();
 
             for (int i=0; i < testData.DefaultView.Count; i++)
             {
                 int key;
                 Int32.TryParse(testData.DefaultView[i]["CityKey"].ToString(), out key);
                 result.Add(
-                    new FindResultSimplePair()
+                    new FindAllResult()
                     {
                         Id = key,
-                        StrValue = testData.DefaultView[i]["City"].ToString()
+                        StrValue = testData.DefaultView[i]["City"].ToString(),
+                        EntityName = entityName
                     });
             }
 
             return result;
         }
 
-        public string GetDetailsByKey(long keyValue)
+        public DataTable GetDetailsByKey(long keyValue)
         {
-            throw new NotImplementedException();
+            DataTable testData = repository.GetTestDataByKey(keyValue);
+            return testData;
         }
     }
 }

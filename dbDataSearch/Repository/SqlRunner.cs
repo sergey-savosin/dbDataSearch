@@ -60,6 +60,48 @@ namespace dbDataSearch.Repository
 
         }
 
+        public DataTable GetTableValueByKey2(string sqlQuery, long keyValue)
+        {
+            string sqlConnectionString = GetSqlConnectionString(connectionDetails);
+            DataTable table = new DataTable("ExampleTableByKey");
+
+            using (SqlConnection conn = new SqlConnection(sqlConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(sqlQuery))
+                {
+                    SqlParameter prm = new SqlParameter("KeyValue", SqlDbType.BigInt);
+                    prm.Value = keyValue;
+                    cmd.Parameters.Add(prm);
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(table);
+                    }
+                }
+            }
+
+            return table;
+        }
+
+        public DataTable GetTableValueByKey(string sqlQuery, long keyValue)
+        {
+            string sqlConnectionString = GetSqlConnectionString(connectionDetails);
+            DataTable table = new DataTable("ExampleTableByKey");
+
+            using (var conn = new SqlConnection(sqlConnectionString))
+            {
+                SqlCommand selectCmd = new SqlCommand(sqlQuery, conn);
+                selectCmd.Parameters.Add("KeyValue", SqlDbType.BigInt);
+                selectCmd.Parameters["KeyValue"].Value = keyValue;
+
+                conn.Open();
+                SqlDataReader reader = selectCmd.ExecuteReader();
+                table.Load(reader);
+            }
+
+            return table;
+        }
+
         #region usingSqlConnection
 
         private SqlConnection sqlConnection;

@@ -11,10 +11,18 @@ namespace dbDataSearch.Repository
     public class SqlServerRepository : IRepository
     {
         ISqlRunner sqlRunner;
+        ConnectionDetails connectionDetails;
 
-        public SqlServerRepository(ISqlRunner _sqlRunner)
+        public SqlServerRepository()
         {
-            sqlRunner = _sqlRunner;
+            connectionDetails = GetConnectionDetails("test");
+            sqlRunner = new SqlRunner(connectionDetails);
+        }
+
+        public SqlServerRepository(ConnectionDetails _connectionDetails)
+        {
+            connectionDetails = _connectionDetails;
+            sqlRunner = new SqlRunner(connectionDetails);
         }
 
         /// <summary>
@@ -34,6 +42,7 @@ namespace dbDataSearch.Repository
         {
             List<IEntity> lst = new List<IEntity>();
             lst.Add(new TestEntity());
+            lst.Add(new SqlTestEntity(connectionDetails));
 
             return lst;
         }
@@ -54,9 +63,22 @@ namespace dbDataSearch.Repository
 
         }
 
+        public DataTable GetEntityDetails(string entityName, long entityKey)
+        {
+            switch (entityName)
+            {
+                case "TestEntity":
+                    SqlTestEntity ent = new SqlTestEntity(connectionDetails);
+                    return ent.GetDetailsByKey(entityKey);
+                default:
+                    throw new NotSupportedException($"Invalid entity: {entityName}");
+            }
+        }
+
         public DataTable GetTestData()
         {
-            string sqlQuery = @"SELECT TOP(5) [City Key] CityKey
+            string sqlQuery = @"
+SELECT TOP(50) [City Key] CityKey
       ,[WWI City ID]
       ,[City]
       ,[State Province]
@@ -65,10 +87,28 @@ namespace dbDataSearch.Repository
       ,[Sales Territory]
       ,[Region]
       ,[Subregion]
-      ,[Location]
       ,[Latest Recorded Population]
   FROM [WideWorldImportersDW].[Dimension].[City]";
-            return sqlRunner.GetTableValue(sqlQuery, GetConnectionDetails("WideWorldImportersDW"));
+            return sqlRunner.GetTableValue(sqlQuery);
+        }
+
+        public DataTable GetTestDataByKey(long keyValue)
+        {
+            string sqlQuery = @"
+SELECT [City Key] CityKey
+      ,[WWI City ID]
+      ,[City]
+      ,[State Province]
+      ,[Country]
+      ,[Continent]
+      ,[Sales Territory]
+      ,[Region]
+      ,[Subregion]
+      ,[Latest Recorded Population]
+  FROM [WideWorldImportersDW].[Dimension].[City]
+  WHERE [City Key] = @KeyValue";
+            return sqlRunner.GetTableValueByKey(sqlQuery, keyValue);
+
         }
     }
 }

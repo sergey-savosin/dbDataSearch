@@ -179,6 +179,7 @@
             this.treeEntities.Name = "treeEntities";
             this.treeEntities.Size = new System.Drawing.Size(261, 333);
             this.treeEntities.TabIndex = 0;
+            this.treeEntities.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeEntities_AfterSelect);
             // 
             // kryptonHeaderGroupDataGridView
             // 

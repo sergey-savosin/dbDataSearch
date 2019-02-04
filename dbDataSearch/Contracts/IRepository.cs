@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,5 +12,7 @@ namespace dbDataSearch.Contracts
         List<string> GetAllConnectionNames();
         ConnectionDetails GetConnectionDetails(string connectionName);
         List<IEntity> GetAllRootEntities();
+        //List<IEntity> FindEntitiesByString(string strValue);
+        DataTable GetEntityDetails(string entityName, long entityKey);
     }
 }

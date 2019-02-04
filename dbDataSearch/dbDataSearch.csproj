@@ -65,10 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\ConnectionDetails.cs" />
-    <Compile Include="Contracts\FindResultSimplePair.cs" />
+    <Compile Include="Contracts\FindAllResult.cs" />
     <Compile Include="Contracts\IEntity.cs" />
     <Compile Include="Contracts\IRepository.cs" />
-    <Compile Include="Contracts\SqlRunner.cs" />
+    <Compile Include="Contracts\ISqlRunner.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

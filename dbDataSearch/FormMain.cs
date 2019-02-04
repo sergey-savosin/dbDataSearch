@@ -72,13 +72,22 @@ namespace dbDataSearch
             List<IEntity> lst = rep.GetAllRootEntities();
             foreach(var entity in lst)
             {
-                List<FindResultSimplePair> findResult = entity.FindByString(strFind);
+                List<FindAllResult> findResult = entity.FindByString(strFind);
                 foreach(var elt in findResult)
                 {
-                    string strValue = $"{elt.StrValue} [{elt.Id}]";
-                    treeEntities.Nodes.Add(strValue);
+                    string strValue = $"[{elt.EntityName}] {elt.StrValue} [{elt.Id}]";
+                    TreeNode node = new TreeNode(strValue);
+                    node.Tag = elt;
+                    treeEntities.Nodes.Add(node);
                 }
             }
+        }
+
+        private void treeEntities_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            FindAllResult elt = e.Node.Tag as FindAllResult;
+            DataTable data = rep.GetEntityDetails(elt.EntityName, elt.Id);
+            gridEntityValues.DataSource = data;
         }
     }
 }
