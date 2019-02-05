@@ -69,6 +69,7 @@
     <Compile Include="Contracts\IEntity.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\ISqlRunner.cs" />
+    <Compile Include="Contracts\TreeNodeData.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

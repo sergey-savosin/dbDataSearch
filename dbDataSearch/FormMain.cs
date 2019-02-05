@@ -77,7 +77,13 @@ namespace dbDataSearch
                 {
                     string strValue = $"[{elt.EntityName}] {elt.StrValue} [{elt.Id}]";
                     TreeNode node = new TreeNode(strValue);
-                    node.Tag = elt;
+                    TreeNodeData nodeData = new TreeNodeData()
+                    {
+                        entityObject = entity,
+                        entityKey = elt.Id
+                    };
+
+                    node.Tag = nodeData;
                     treeEntities.Nodes.Add(node);
                 }
             }
@@ -85,8 +91,8 @@ namespace dbDataSearch
 
         private void treeEntities_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            FindAllResult elt = e.Node.Tag as FindAllResult;
-            DataTable data = rep.GetEntityDetails(elt.EntityName, elt.Id);
+            TreeNodeData nodeData = e.Node.Tag as TreeNodeData;
+            DataTable data = nodeData.entityObject.GetDetailsByKey(nodeData.entityKey);
             gridEntityValues.DataSource = data;
         }
     }
