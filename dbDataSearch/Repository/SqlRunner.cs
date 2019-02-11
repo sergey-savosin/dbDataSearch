@@ -12,9 +12,9 @@ namespace dbDataSearch.Repository
 {
     public class SqlRunner : ISqlRunner
     {
-        ConnectionDetails connectionDetails;
+        TConnectionDetails connectionDetails;
 
-        public SqlRunner(ConnectionDetails _connectionDetails)
+        public SqlRunner(TConnectionDetails _connectionDetails)
         {
             connectionDetails = _connectionDetails;
         }
@@ -111,7 +111,7 @@ namespace dbDataSearch.Repository
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public string GetSqlConnectionString(ConnectionDetails connectionDetails)
+        public string GetSqlConnectionString(TConnectionDetails connectionDetails)
         {
             var connectionBuilder = new SqlConnectionStringBuilder();
             connectionBuilder.IntegratedSecurity = true;
@@ -125,7 +125,7 @@ namespace dbDataSearch.Repository
         /// </summary>
         /// <param name="connectionDetails"></param>
         /// <returns></returns>
-        SqlConnection GetSqlConnection(ConnectionDetails connectionDetails)
+        SqlConnection GetSqlConnection(TConnectionDetails connectionDetails)
         {
             if (sqlConnection == null)
             {

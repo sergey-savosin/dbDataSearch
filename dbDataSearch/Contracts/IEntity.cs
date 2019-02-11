@@ -15,7 +15,7 @@ namespace dbDataSearch.Contracts
         /// </summary>
         /// <param name="strValue">Строка для поиска</param>
         /// <returns>Список Key найденных сущностей</returns>
-        List<FindAllResult> FindByString(string strValue);
+        List<TSearchEntityResult> FindByString(string strValue);
         
         /// <summary>
         /// Получение детальной информации сущности по ключу

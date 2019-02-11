@@ -13,23 +13,23 @@ namespace dbDataSearch.Repository
         SqlServerRepository repository;
         readonly string entityName = "TestEntity";
 
-        public SqlTestEntity(ConnectionDetails connectionDetails)
+        public SqlTestEntity(TConnectionDetails connectionDetails)
         {
             repository = new SqlServerRepository(connectionDetails);
         }
 
-        public List<FindAllResult> FindByString(string strValue)
+        public List<TSearchEntityResult> FindByString(string strValue)
         {
             DataTable testData = repository.GetTestData();
 
-            List<FindAllResult> result = new List<FindAllResult>();
+            List<TSearchEntityResult> result = new List<TSearchEntityResult>();
 
             for (int i=0; i < testData.DefaultView.Count; i++)
             {
                 int key;
                 Int32.TryParse(testData.DefaultView[i]["CityKey"].ToString(), out key);
                 result.Add(
-                    new FindAllResult()
+                    new TSearchEntityResult()
                     {
                         Id = key,
                         StrValue = testData.DefaultView[i]["City"].ToString(),

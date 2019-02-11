@@ -1,4 +1,5 @@
-﻿using dbDataSearch.Contracts;
+﻿using dbDataSearch.BusinessLogic;
+using dbDataSearch.Contracts;
 using dbDataSearch.Repository;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace dbDataSearch
 {
     public partial class FormMain : ComponentFactory.Krypton.Toolkit.KryptonForm
     {
-        IRepository rep;
+        //IRepository rep;
+        IConnectionRepository connectionRepository;
+        IEntityRepository entityRepository;
 
         public FormMain()
         {
@@ -55,12 +58,17 @@ namespace dbDataSearch
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            if (rep == null)
+            if (connectionRepository == null)
             {
-                rep = new SqlServerRepository();
+                connectionRepository = new ConnectionRepository();
             }
 
-            List<string> cons = rep.GetAllConnectionNames();
+            if (entityRepository == null)
+            {
+                entityRepository = new EntityRepository();
+            }
+
+            List<string> cons = connectionRepository.GetAllConnectionNames();
             comboboxConnection.ComboBox.DataSource = cons;
         }
 
@@ -69,30 +77,35 @@ namespace dbDataSearch
             treeEntities.Nodes.Clear();
             string strFind = textboxSearchString.Text;
 
-            List<IEntity> lst = rep.GetAllRootEntities();
-            foreach(var entity in lst)
+            List<TSearchEntityResult> findResult = entityRepository.SearchEntitiesByString(strFind, GetConnectionDetails());
+            foreach (var elt in findResult)
             {
-                List<FindAllResult> findResult = entity.FindByString(strFind);
-                foreach(var elt in findResult)
+                string strValue = $"[{elt.EntityName}] {elt.Details} = {elt.StrValue} [{elt.Key}]";
+                TreeNode node = new TreeNode(strValue);
+                TTreeNodeData nodeData = new TTreeNodeData()
                 {
-                    string strValue = $"[{elt.EntityName}] {elt.StrValue} [{elt.Id}]";
-                    TreeNode node = new TreeNode(strValue);
-                    TreeNodeData nodeData = new TreeNodeData()
-                    {
-                        entityObject = entity,
-                        entityKey = elt.Id
-                    };
+                    EntityName = elt.EntityName,
+                    EntityKey = elt.Key,
+                    Details = elt.Details
+                };
 
-                    node.Tag = nodeData;
-                    treeEntities.Nodes.Add(node);
-                }
+                node.Tag = nodeData;
+                treeEntities.Nodes.Add(node);
             }
+        }
+
+        private TConnectionDetails GetConnectionDetails()
+        {
+            string connName = comboboxConnection.Text;
+            return connectionRepository.GetConnectionDetails(connName);
         }
 
         private void treeEntities_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            TreeNodeData nodeData = e.Node.Tag as TreeNodeData;
-            DataTable data = nodeData.entityObject.GetDetailsByKey(nodeData.entityKey);
+            TTreeNodeData nodeData = e.Node.Tag as TTreeNodeData;
+            string entityName = nodeData.EntityName;
+            long entityKey = nodeData.EntityKey;
+            DataTable data = entityRepository.GetEntityDetailsByKey(entityName, entityKey, GetConnectionDetails());
             gridEntityValues.DataSource = data;
         }
     }

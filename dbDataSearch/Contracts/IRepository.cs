@@ -9,10 +9,7 @@ namespace dbDataSearch.Contracts
 {
     public interface IRepository
     {
-        List<string> GetAllConnectionNames();
-        ConnectionDetails GetConnectionDetails(string connectionName);
         List<IEntity> GetAllRootEntities();
-        //List<IEntity> FindEntitiesByString(string strValue);
         DataTable GetEntityDetails(string entityName, long entityKey);
     }
 }

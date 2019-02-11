@@ -11,7 +11,7 @@ namespace dbDataSearch.Repository
     public class SqlServerRepository : IRepository
     {
         ISqlRunner sqlRunner;
-        ConnectionDetails connectionDetails;
+        TConnectionDetails connectionDetails;
 
         public SqlServerRepository()
         {
@@ -19,48 +19,18 @@ namespace dbDataSearch.Repository
             sqlRunner = new SqlRunner(connectionDetails);
         }
 
-        public SqlServerRepository(ConnectionDetails _connectionDetails)
+        public SqlServerRepository(TConnectionDetails _connectionDetails)
         {
             connectionDetails = _connectionDetails;
             sqlRunner = new SqlRunner(connectionDetails);
         }
 
-        /// <summary>
-        /// Список всех соединений к SqlServer
-        /// </summary>
-        /// <returns></returns>
-        public List<string> GetAllConnectionNames()
-        {
-            List<string> list = new List<string>()
-            {
-                "talent_manager","test"
-            };
-            return list;
-        }
-
         public List<IEntity> GetAllRootEntities()
         {
             List<IEntity> lst = new List<IEntity>();
-            lst.Add(new TestEntity());
             lst.Add(new SqlTestEntity(connectionDetails));
 
             return lst;
-        }
-
-        /// <summary>
-        /// Данные одного соединения SqlServer
-        /// </summary>
-        /// <param name="connectionName"></param>
-        /// <returns></returns>
-        public ConnectionDetails GetConnectionDetails(string connectionName)
-        {
-            return new ConnectionDetails()
-            {
-                ServerName = @"SergeyHome\SQLExpress",
-                ConnectionName = connectionName,
-                DatabaseName = "WideWorldImportersDW"
-            };
-
         }
 
         public DataTable GetEntityDetails(string entityName, long entityKey)
