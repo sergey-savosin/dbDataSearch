@@ -9,9 +9,7 @@ namespace dbDataSearch.Contracts
 {
     public interface ISqlRunner
     {
-        DataTable GetTableValue(string sqlQuery);
-        DataTable GetTableValueByKey(string sqlQuery, long keyValue);
-        string GetScalarValue(string sqlQuery);
-        void Execute(string sqlQuery);
+        DataTable GetTableResult(string sqlQuery);
+        DataTable GetTableResultWithParam(string sqlQuery, object paramValue);
     }
 }

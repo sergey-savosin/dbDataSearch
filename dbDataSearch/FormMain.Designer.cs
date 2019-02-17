@@ -244,7 +244,7 @@
             this.btnFindEntity});
             this.toolStripMain.Location = new System.Drawing.Point(3, 24);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(700, 25);
+            this.toolStripMain.Size = new System.Drawing.Size(731, 25);
             this.toolStripMain.TabIndex = 1;
             // 
             // btnLightScheme
@@ -301,6 +301,8 @@
             // 
             this.textboxSearchString.Name = "textboxSearchString";
             this.textboxSearchString.Size = new System.Drawing.Size(100, 25);
+            this.textboxSearchString.Text = "London";
+            this.textboxSearchString.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textboxSearchString_KeyDown);
             // 
             // btnFindEntity
             // 

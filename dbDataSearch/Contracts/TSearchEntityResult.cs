@@ -14,6 +14,6 @@
         /// <summary>
         /// Подробности - в каком атрибуте найдена искомая строка
         /// </summary>
-        public string Details { get; set; }
+        public string FoundColumn { get; set; }
     }
 }

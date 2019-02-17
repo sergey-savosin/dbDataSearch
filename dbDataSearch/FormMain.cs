@@ -1,6 +1,5 @@
 ﻿using dbDataSearch.BusinessLogic;
 using dbDataSearch.Contracts;
-using dbDataSearch.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,7 +64,7 @@ namespace dbDataSearch
 
             if (entityRepository == null)
             {
-                entityRepository = new EntityRepository();
+                entityRepository = new EntityRepository(GetConnectionDetails());
             }
 
             List<string> cons = connectionRepository.GetAllConnectionNames();
@@ -74,30 +73,7 @@ namespace dbDataSearch
 
         private void btnFindEntity_Click(object sender, EventArgs e)
         {
-            treeEntities.Nodes.Clear();
-            string strFind = textboxSearchString.Text;
-
-            List<TSearchEntityResult> findResult = entityRepository.SearchEntitiesByString(strFind, GetConnectionDetails());
-            foreach (var elt in findResult)
-            {
-                string strValue = $"[{elt.EntityName}] {elt.Details} = {elt.StrValue} [{elt.Key}]";
-                TreeNode node = new TreeNode(strValue);
-                TTreeNodeData nodeData = new TTreeNodeData()
-                {
-                    EntityName = elt.EntityName,
-                    EntityKey = elt.Key,
-                    Details = elt.Details
-                };
-
-                node.Tag = nodeData;
-                treeEntities.Nodes.Add(node);
-            }
-        }
-
-        private TConnectionDetails GetConnectionDetails()
-        {
-            string connName = comboboxConnection.Text;
-            return connectionRepository.GetConnectionDetails(connName);
+            FindEntityByTextBoxString();
         }
 
         private void treeEntities_AfterSelect(object sender, TreeViewEventArgs e)
@@ -105,8 +81,47 @@ namespace dbDataSearch
             TTreeNodeData nodeData = e.Node.Tag as TTreeNodeData;
             string entityName = nodeData.EntityName;
             long entityKey = nodeData.EntityKey;
-            DataTable data = entityRepository.GetEntityDetailsByKey(entityName, entityKey, GetConnectionDetails());
+            DataTable data = entityRepository.GetEntityDetailsByKey(entityName, entityKey);
             gridEntityValues.DataSource = data;
         }
+
+        private void textboxSearchString_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                FindEntityByTextBoxString();
+            }
+        }
+
+        #region utils
+        private TConnectionDetails GetConnectionDetails()
+        {
+            string connName = comboboxConnection.Text;
+            return connectionRepository.GetConnectionDetails(connName);
+        }
+
+        private void FindEntityByTextBoxString()
+        {
+            treeEntities.Nodes.Clear();
+            string strFind = textboxSearchString.Text;
+
+            List<TSearchEntityResult> findResult = entityRepository.SearchEntitiesByString(strFind);
+            foreach (var elt in findResult)
+            {
+                string strValue = $"[{elt.EntityName}] {elt.FoundColumn} = {elt.StrValue} [{elt.Key}]";
+                TreeNode node = new TreeNode(strValue);
+                TTreeNodeData nodeData = new TTreeNodeData()
+                {
+                    EntityName = elt.EntityName,
+                    EntityKey = elt.Key,
+                    Details = elt.FoundColumn
+                };
+
+                node.Tag = nodeData;
+                treeEntities.Nodes.Add(node);
+            }
+        }
+
+        #endregion
     }
 }

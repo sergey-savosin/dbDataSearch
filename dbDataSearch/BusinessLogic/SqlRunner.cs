@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dbDataSearch.Repository
+namespace dbDataSearch.BusinessLogic
 {
     public class SqlRunner : ISqlRunner
     {
@@ -19,17 +19,7 @@ namespace dbDataSearch.Repository
             connectionDetails = _connectionDetails;
         }
 
-        public void Execute(string sqlQuery)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetScalarValue(string sqlQuery)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataTable GetTableValue(string sqlQuery)
+        public DataTable GetTableResult(string sqlQuery)
         {
             string sqlConnectionString = GetSqlConnectionString(connectionDetails);
             DataTable table = new DataTable("ExampleTable");
@@ -43,58 +33,34 @@ namespace dbDataSearch.Repository
 
         }
 
-        public DataTable GetTableValue2(string sqlQuery)
+        public DataTable GetTableResultWithParam(string sqlQuery, object paramValue)
         {
             string sqlConnectionString = GetSqlConnectionString(connectionDetails);
-            DataTable table = new DataTable("ExampleTable2");
-
-            using (var conn = new SqlConnection(sqlConnectionString))
-            {
-                SqlCommand selectCmd = new SqlCommand(sqlQuery);
-                conn.Open();
-                SqlDataReader reader = selectCmd.ExecuteReader();
-                table.Load(reader);
-            }
-
-            return table;
-
-        }
-
-        public DataTable GetTableValueByKey2(string sqlQuery, long keyValue)
-        {
-            string sqlConnectionString = GetSqlConnectionString(connectionDetails);
-            DataTable table = new DataTable("ExampleTableByKey");
-
-            using (SqlConnection conn = new SqlConnection(sqlConnectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand(sqlQuery))
-                {
-                    SqlParameter prm = new SqlParameter("KeyValue", SqlDbType.BigInt);
-                    prm.Value = keyValue;
-                    cmd.Parameters.Add(prm);
-
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                    {
-                        adapter.Fill(table);
-                    }
-                }
-            }
-
-            return table;
-        }
-
-        public DataTable GetTableValueByKey(string sqlQuery, long keyValue)
-        {
-            string sqlConnectionString = GetSqlConnectionString(connectionDetails);
-            DataTable table = new DataTable("ExampleTableByKey");
+            DataTable table = new DataTable("TableName");
 
             using (var conn = new SqlConnection(sqlConnectionString))
             {
                 SqlCommand selectCmd = new SqlCommand(sqlQuery, conn);
-                selectCmd.Parameters.Add("KeyValue", SqlDbType.BigInt);
-                selectCmd.Parameters["KeyValue"].Value = keyValue;
 
-                conn.Open();
+				switch (paramValue)
+				{
+					case long keyValue:
+						selectCmd.Parameters.Add("KeyValue", SqlDbType.BigInt);
+						selectCmd.Parameters["KeyValue"].Value = keyValue;
+						break;
+					case string strValue:
+						selectCmd.Parameters.Add("StrValue", SqlDbType.VarChar, 500);
+						selectCmd.Parameters["StrValue"].Value = strValue;
+						break;
+
+					default:
+						throw new ArgumentException(
+							message: "paramValue is not recognised type",
+							paramName: nameof(paramValue));
+
+				}
+
+				conn.Open();
                 SqlDataReader reader = selectCmd.ExecuteReader();
                 table.Load(reader);
             }

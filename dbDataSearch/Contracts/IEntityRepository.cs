@@ -15,15 +15,15 @@ namespace dbDataSearch.Contracts
         /// <param name="strValue">Строка поиска</param>
         /// <param name="connectionDetails">Параметры соединения с БД</param>
         /// <returns>Список результатов поиска</returns>
-        List<TSearchEntityResult> SearchEntitiesByString(string strValue, TConnectionDetails connectionDetails);
+        List<TSearchEntityResult> SearchEntitiesByString(string strValue);
 
         /// <summary>
         /// Получение подробностей по названию и ключу сущности
         /// </summary>
-        /// <param name="EntityName">Название сущности</param>
+        /// <param name="entityName">Название сущности</param>
         /// <param name="key">Ключ</param>
         /// <param name="connectionDetails">Параметры соединения с БД</param>
         /// <returns>Результат запроса</returns>
-        DataTable GetEntityDetailsByKey(string EntityName, long key, TConnectionDetails connectionDetails);
+        DataTable GetEntityDetailsByKey(string entityName, long key);
     }
 }
