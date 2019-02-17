@@ -3,6 +3,7 @@
 	public enum EntityQueryType
 	{
 		FindByKey,
-		FindByString
+		FindByString,
+        FindByParentKey
 	}
 }

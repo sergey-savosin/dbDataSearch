@@ -25,6 +25,8 @@ namespace dbDataSearch
 
         private void btnLightScheme_Click(object sender, EventArgs e)
         {
+            treeEntities.Nodes.Clear();
+
             kryptonManagerMain.GlobalPalette = kryptonPalette_Office2010_Blue;
             treeEntities.StateCommon.Back.Color1 = Color.Empty;
             treeEntities.StateCommon.Node.Content.ShortText.Color1 = Color.Black;
@@ -39,6 +41,8 @@ namespace dbDataSearch
 
         private void btnDarkScheme_Click(object sender, EventArgs e)
         {
+            treeEntities.Nodes.Clear();
+
             kryptonManagerMain.GlobalPalette = kryptonPalette_Office2010_Black;
             treeEntities.StateCommon.Back.Color1 = Color.DimGray;
             treeEntities.StateCommon.Node.Content.ShortText.Color1 = Color.White;
@@ -108,7 +112,7 @@ namespace dbDataSearch
             List<TSearchEntityResult> findResult = entityRepository.SearchEntitiesByString(strFind);
             foreach (var elt in findResult)
             {
-                string strValue = $"[{elt.EntityName}] {elt.FoundColumn} = {elt.StrValue} [{elt.Key}]";
+                string strValue = $"{elt.FoundColumn} = {elt.StrValue} [{elt.Key}]";
                 TreeNode node = new TreeNode(strValue);
                 TTreeNodeData nodeData = new TTreeNodeData()
                 {
@@ -118,10 +122,37 @@ namespace dbDataSearch
                 };
 
                 node.Tag = nodeData;
+                node.Nodes.Add("to do");
                 treeEntities.Nodes.Add(node);
             }
         }
 
         #endregion
+
+        private void treeEntities_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            var nodeData = e.Node.Tag as TTreeNodeData;
+
+            var searchResult = entityRepository.SearchChildEntitiesByParentKey(nodeData.EntityName, nodeData.EntityKey);
+
+            // Заполнение открываемого уровня
+            e.Node.Nodes.Clear();
+            foreach (var elt in searchResult)
+            {
+                string strValue = $"{elt.FoundColumn} = {elt.Key}";
+                TreeNode newNode = new TreeNode(strValue);
+                TTreeNodeData newNodeData = new TTreeNodeData()
+                {
+                    EntityName = elt.EntityName,
+                    EntityKey = elt.Key,
+                    Details = elt.FoundColumn
+                };
+
+                newNode.Tag = newNodeData;
+                newNode.Nodes.Add("to do");
+                e.Node.Nodes.Add(newNode);
+
+            }
+        }
     }
 }

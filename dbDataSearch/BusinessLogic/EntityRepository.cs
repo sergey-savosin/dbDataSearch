@@ -35,6 +35,11 @@ namespace dbDataSearch.BusinessLogic
             foreach (string entityName in entityNames)
             {
                 string selectQuery = entityConfig.GetEntityQuery(entityName, EntityQueryType.FindByString);
+                if (string.IsNullOrEmpty(selectQuery))
+                {
+                    continue;
+                }
+
                 DataTable entityResult = sqlRunner.GetTableResultWithParam(selectQuery, strValue);
 
                 for (int i = 0; i < entityResult.DefaultView.Count; i++)
@@ -42,7 +47,7 @@ namespace dbDataSearch.BusinessLogic
                     int key;
                     string foundStrValue = "n\a";
                     string foundColumn = "";
-                    bool parseResult = Int32.TryParse(entityResult.DefaultView[i]["Key"].ToString(), out key);
+                    bool parseResult = Int32.TryParse(entityResult.DefaultView[i]["KeyValue"].ToString(), out key);
                     if (parseResult)
                     {
                         foundStrValue = entityResult.DefaultView[i]["StrValue"].ToString();
@@ -57,6 +62,47 @@ namespace dbDataSearch.BusinessLogic
                             EntityName = entityName
                         });
                 }
+            }
+
+            return searchResult;
+        }
+
+        public List<TSearchEntityResult> SearchChildEntitiesByParentKey(string parentEntityName, long parentKeyValue)
+        {
+            List<TSearchEntityResult> searchResult = new List<TSearchEntityResult>();
+
+            List<string> childNames = entityConfig.GetChildEntityNames(parentEntityName);
+            foreach(string entityName in childNames)
+            {
+                string selectQuery = entityConfig.GetEntityQuery(entityName, EntityQueryType.FindByParentKey, parentEntityName);
+                if (string.IsNullOrEmpty(selectQuery))
+                {
+                    continue;
+                }
+
+                DataTable entityResult = sqlRunner.GetTableResultWithParam(selectQuery, parentKeyValue);
+
+                for (int i = 0; i < entityResult.DefaultView.Count; i++)
+                {
+                    int key;
+                    string foundStrValue = "n\a";
+                    string foundColumn = "";
+                    bool parseResult = Int32.TryParse(entityResult.DefaultView[i]["KeyValue"].ToString(), out key);
+                    if (parseResult)
+                    {
+                        foundStrValue = entityResult.DefaultView[i]["StrValue"].ToString();
+                        foundColumn = entityResult.DefaultView[i]["FoundColumn"].ToString();
+                    }
+                    searchResult.Add(
+                        new TSearchEntityResult()
+                        {
+                            Key = key,
+                            StrValue = foundStrValue,
+                            FoundColumn = foundColumn,
+                            EntityName = entityName
+                        });
+                }
+
             }
 
             return searchResult;

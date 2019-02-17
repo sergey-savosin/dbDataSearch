@@ -179,6 +179,7 @@
             this.treeEntities.Name = "treeEntities";
             this.treeEntities.Size = new System.Drawing.Size(261, 333);
             this.treeEntities.TabIndex = 0;
+            this.treeEntities.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeEntities_AfterExpand);
             this.treeEntities.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeEntities_AfterSelect);
             // 
             // kryptonHeaderGroupDataGridView
@@ -301,7 +302,7 @@
             // 
             this.textboxSearchString.Name = "textboxSearchString";
             this.textboxSearchString.Size = new System.Drawing.Size(100, 25);
-            this.textboxSearchString.Text = "London";
+            this.textboxSearchString.Text = "Sea Island";
             this.textboxSearchString.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textboxSearchString_KeyDown);
             // 
             // btnFindEntity

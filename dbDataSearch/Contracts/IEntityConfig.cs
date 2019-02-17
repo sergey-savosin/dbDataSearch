@@ -6,6 +6,9 @@ namespace dbDataSearch.Contracts
 	{
 		List<string> GetRootEntityNames();
 
-		string GetEntityQuery(string EntityName, EntityQueryType queryType);
-	}
+		string GetEntityQuery(string EntityName, EntityQueryType queryType, string parentEntityName = "");
+
+        List<string> GetChildEntityNames(string entityName);
+
+    }
 }
