@@ -67,6 +67,14 @@
     <Compile Include="BusinessLogic\ConnectionRepository.cs" />
     <Compile Include="BusinessLogic\EntityConfig.cs" />
     <Compile Include="BusinessLogic\EntityRepository.cs" />
+    <Compile Include="Setup\FormSetupEntity.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\FormSetupEntity.Designer.cs">
+      <DependentUpon>FormSetupEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\SetupRepository.cs" />
+    <Compile Include="Setup\TSetupEntity.cs" />
     <Compile Include="Contracts\IEntityConfig.cs" />
     <Compile Include="Contracts\TConnectionDetails.cs" />
     <Compile Include="Contracts\EntityQueryType.cs" />
@@ -74,6 +82,8 @@
     <Compile Include="Contracts\IConnectionRepository.cs" />
     <Compile Include="Contracts\IEntityRepository.cs" />
     <Compile Include="Contracts\ISqlRunner.cs" />
+    <Compile Include="Setup\TSetupEntityCollection.cs" />
+    <Compile Include="Setup\TSetupEntityQuery.cs" />
     <Compile Include="Contracts\TTreeNodeData.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -96,6 +106,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Setup\FormSetupEntity.resx">
+      <DependentUpon>FormSetupEntity.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

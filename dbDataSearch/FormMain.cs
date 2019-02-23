@@ -1,5 +1,6 @@
 ﻿using dbDataSearch.BusinessLogic;
 using dbDataSearch.Contracts;
+using dbDataSearch.Setup;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -153,6 +154,17 @@ namespace dbDataSearch
                 e.Node.Nodes.Add(newNode);
 
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void setupEntitiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormSetupEntity();
+            form.ShowDialog(this);
         }
     }
 }

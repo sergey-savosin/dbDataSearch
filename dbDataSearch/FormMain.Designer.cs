@@ -41,6 +41,9 @@
             this.gridEntityValues = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setupEntitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.btnLightScheme = new System.Windows.Forms.ToolStripButton();
@@ -219,9 +222,34 @@
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setupEntitiesToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // setupEntitiesToolStripMenuItem
+            // 
+            this.setupEntitiesToolStripMenuItem.Name = "setupEntitiesToolStripMenuItem";
+            this.setupEntitiesToolStripMenuItem.ShortcutKeyDisplayString = "F2";
+            this.setupEntitiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.setupEntitiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setupEntitiesToolStripMenuItem.Text = "Setup entities";
+            this.setupEntitiesToolStripMenuItem.Click += new System.EventHandler(this.setupEntitiesToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -245,7 +273,7 @@
             this.btnFindEntity});
             this.toolStripMain.Location = new System.Drawing.Point(3, 24);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(731, 25);
+            this.toolStripMain.Size = new System.Drawing.Size(700, 25);
             this.toolStripMain.TabIndex = 1;
             // 
             // btnLightScheme
@@ -392,6 +420,9 @@
         private ComponentFactory.Krypton.Toolkit.KryptonPalette kryptonPalette_Office2010_Black;
         private ComponentFactory.Krypton.Toolkit.KryptonPalette kryptonPalette_Office2010_Blue;
         private ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup kryptonHeaderGroupMain;
+        private System.Windows.Forms.ToolStripMenuItem setupEntitiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 
