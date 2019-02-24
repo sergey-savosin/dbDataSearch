@@ -4,8 +4,10 @@ namespace dbDataSearch.Setup
 {
     public class TSetupEntityQuery
     {
-        public EntityQueryType queryType;
-        public string parentEntityName;
-        public string querySql;
+        public EntityQueryType QueryType { get; set; }// = EntityQueryType.FindByKey;
+
+        public string ParentEntityName { get; set; }// = "ParentEntity Name";
+
+        public string QuerySql { get; set; }// = "select * from a table;";
     }
 }

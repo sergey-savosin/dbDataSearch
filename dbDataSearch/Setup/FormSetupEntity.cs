@@ -15,29 +15,34 @@ namespace dbDataSearch.Setup
 {
     public partial class FormSetupEntity : Form
     {
+        TSetupEntityCollection m_SetupEntityCollection;
+
         public FormSetupEntity()
         {
             InitializeComponent();
-        }
 
-        private void kryptonButton1_Click(object sender, EventArgs e)
-        {
-            string path = Application.StartupPath;
-            TSetupEntityCollection col = SetupRepository.LoadSetupConnectionCollection(path);
+            m_EntityBindingSource.DataSource = typeof(TSetupEntityCollection);
+            m_EntityBindingSource.DataMember = "EntityCollection";
+            m_EntityBindingSource.AddNew();
+
+            m_EntityName_ListBox.DataSource = m_EntityBindingSource;
+            m_EntityName_ListBox.DisplayMember = "EntityName";
+
+            m_EntityComment_TextBox.DataBindings.Add("Text", m_EntityBindingSource, "EntityName");
         }
 
         private TSetupEntityQuery GetSetupEntityQuery(string entityName, EntityQueryType queryType, IEntityConfig config, string parentEntityName = null)
         {
             TSetupEntityQuery res = new TSetupEntityQuery();
-            res.queryType = queryType;
+            res.QueryType = queryType;
             if (queryType == EntityQueryType.FindByParentKey)
             {
-                res.parentEntityName = parentEntityName;
-                res.querySql = config.GetEntityQuery(entityName, queryType, parentEntityName);
+                res.ParentEntityName = parentEntityName;
+                res.QuerySql = config.GetEntityQuery(entityName, queryType, parentEntityName);
             }
             else
             {
-                res.querySql = config.GetEntityQuery(entityName, queryType);
+                res.QuerySql = config.GetEntityQuery(entityName, queryType);
             }
 
             return res;
@@ -46,7 +51,7 @@ namespace dbDataSearch.Setup
         private TSetupEntityCollection GetSetupEntityCollection(IEntityConfig config)
         {
             TSetupEntityCollection entityCollection = new TSetupEntityCollection();
-            entityCollection.entityCollection = new List<TSetupEntity>();
+            entityCollection.EntityCollection = new List<TSetupEntity>();
 
             // City entity
             TSetupEntity entity1 = new TSetupEntity()
@@ -71,13 +76,13 @@ namespace dbDataSearch.Setup
                 }
             };
 
-            entityCollection.entityCollection.Add(entity1);
-            entityCollection.entityCollection.Add(entity2);
+            entityCollection.EntityCollection.Add(entity1);
+            entityCollection.EntityCollection.Add(entity2);
 
             return entityCollection;
         }
 
-        private void m_SaveSetup_Button_Click(object sender, EventArgs e)
+        private void SaveSetup()
         {
             string path = Application.StartupPath;
             IEntityConfig entityConfig = new EntityConfig();
@@ -85,6 +90,23 @@ namespace dbDataSearch.Setup
 
             TSetupEntityCollection setupEntityCollection = GetSetupEntityCollection(entityConfig);
             SetupRepository.SaveSetupEntityCollection(path, setupEntityCollection);
+        }
+
+        private void FormSetupEntity_Load(object sender, EventArgs e)
+        {
+            SaveSetup();
+
+            string path = Application.StartupPath;
+            m_SetupEntityCollection = SetupRepository.LoadSetupConnectionCollection(path);
+
+            m_EntityBindingSource.DataSource = m_SetupEntityCollection;
+
+        }
+
+        private void FormSetupEntity_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            m_EntityBindingSource.EndEdit();
+            DialogResult = DialogResult.Yes;
         }
     }
 }

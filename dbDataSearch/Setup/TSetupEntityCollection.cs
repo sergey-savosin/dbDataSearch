@@ -4,6 +4,6 @@ namespace dbDataSearch.Setup
 {
     public class TSetupEntityCollection
     {
-        public List<TSetupEntity> entityCollection;
+        public List<TSetupEntity> EntityCollection { get; set; }//= new List<TSetupEntity>();
     }
 }
