@@ -68,6 +68,7 @@
     <Compile Include="BusinessLogic\ConnectionRepository.cs" />
     <Compile Include="BusinessLogic\EntityConfig.cs" />
     <Compile Include="BusinessLogic\EntityRepository.cs" />
+    <Compile Include="Setup\EntityQueryTypeClass.cs" />
     <Compile Include="Setup\FormSetupEntity.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -21,14 +21,36 @@ namespace dbDataSearch.Setup
         {
             InitializeComponent();
 
-            m_EntityBindingSource.DataSource = typeof(TSetupEntityCollection);
-            m_EntityBindingSource.DataMember = "EntityCollection";
-            m_EntityBindingSource.AddNew();
+            // Master: EntityName
+            m_EntityName_BindingSource.DataSource = typeof(TSetupEntityCollection);
+            m_EntityName_BindingSource.DataMember = "EntityCollection";
+            m_EntityName_BindingSource.AddNew();
 
-            m_EntityName_ListBox.DataSource = m_EntityBindingSource;
+            m_EntityName_ListBox.DataSource = m_EntityName_BindingSource;
             m_EntityName_ListBox.DisplayMember = "EntityName";
 
-            m_EntityComment_TextBox.DataBindings.Add("Text", m_EntityBindingSource, "EntityName");
+            m_EntityName_TextBox.DataBindings.Add("Text", m_EntityName_BindingSource, "EntityName");
+
+            // Child: EntityQuery
+            m_EntityQuery_BindingSource.DataSource = m_EntityName_BindingSource;
+            m_EntityQuery_BindingSource.DataMember = "EntityQueryCollection";
+
+            m_EntityQuery_ListBox.DataSource = m_EntityQuery_BindingSource;
+            m_EntityQuery_ListBox.DisplayMember = "QueryType";
+
+            m_ParentEntityNameTextBox.DataBindings
+                .Add("Text", m_EntityQuery_BindingSource, "ParentEntityName");
+
+            m_QueryType_ComboBox.DataSource = EntityQueryTypeClass.EntityQueryTypeArray;
+            m_QueryType_ComboBox.ValueMember = "EntityQueryType";
+            m_QueryType_ComboBox.DisplayMember = "Name";
+
+            m_QueryType_ComboBox.DataBindings
+                .Add("SelectedValue", m_EntityQuery_BindingSource, "QueryType");
+
+            m_EntityQuerySql_TextBox.DataBindings
+                .Add("Text", m_EntityQuery_BindingSource, "QuerySql");
+
         }
 
         private TSetupEntityQuery GetSetupEntityQuery(string entityName, EntityQueryType queryType, IEntityConfig config, string parentEntityName = null)
@@ -94,18 +116,18 @@ namespace dbDataSearch.Setup
 
         private void FormSetupEntity_Load(object sender, EventArgs e)
         {
-            SaveSetup();
+            //SaveSetup();
 
             string path = Application.StartupPath;
             m_SetupEntityCollection = SetupRepository.LoadSetupConnectionCollection(path);
 
-            m_EntityBindingSource.DataSource = m_SetupEntityCollection;
+            m_EntityName_BindingSource.DataSource = m_SetupEntityCollection;
 
         }
 
         private void FormSetupEntity_FormClosing(object sender, FormClosingEventArgs e)
         {
-            m_EntityBindingSource.EndEdit();
+            m_EntityName_BindingSource.EndEdit();
             DialogResult = DialogResult.Yes;
         }
     }
