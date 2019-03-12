@@ -38,7 +38,7 @@ namespace dbDataSearch.Setup
             m_EntityQuery_ListBox.DataSource = m_EntityQuery_BindingSource;
             m_EntityQuery_ListBox.DisplayMember = "QueryType";
 
-            m_ParentEntityNameTextBox.DataBindings
+            m_ParentEntityName_TextBox.DataBindings
                 .Add("Text", m_EntityQuery_BindingSource, "ParentEntityName");
 
             m_QueryType_ComboBox.DataSource = EntityQueryTypeClass.EntityQueryTypeArray;
@@ -47,6 +47,12 @@ namespace dbDataSearch.Setup
 
             m_QueryType_ComboBox.DataBindings
                 .Add("SelectedValue", m_EntityQuery_BindingSource, "QueryType");
+
+            m_QueryComment_TextBox.DataBindings
+                .Add("Text", m_EntityQuery_BindingSource, "QueryComment");
+
+            m_QuerySortOrder_kryptonNumericUpDown.DataBindings
+                .Add("Value", m_EntityQuery_BindingSource, "SortOrder");
 
             m_EntityQuerySql_TextBox.DataBindings
                 .Add("Text", m_EntityQuery_BindingSource, "QuerySql");
@@ -62,9 +68,15 @@ namespace dbDataSearch.Setup
                 res.ParentEntityName = parentEntityName;
                 res.QuerySql = config.GetEntityQuery(entityName, queryType, parentEntityName);
             }
+            else if (queryType == EntityQueryType.FindDetailsByKey)
+            {
+                res.SortOrder = 2;
+                res.QuerySql = "select 2 res";
+            }
             else
             {
                 res.QuerySql = config.GetEntityQuery(entityName, queryType);
+                res.SortOrder = 1;
             }
 
             return res;
@@ -116,7 +128,7 @@ namespace dbDataSearch.Setup
 
         private void FormSetupEntity_Load(object sender, EventArgs e)
         {
-            //SaveSetup();
+            SaveSetup();
 
             string path = Application.StartupPath;
             m_SetupEntityCollection = SetupRepository.LoadSetupConnectionCollection(path);

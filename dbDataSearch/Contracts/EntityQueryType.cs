@@ -4,6 +4,7 @@
 	{
 		FindByKey,
 		FindByString,
-        FindByParentKey
+        FindByParentKey,
+        FindDetailsByKey
 	}
 }
