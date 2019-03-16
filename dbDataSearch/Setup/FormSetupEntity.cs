@@ -15,8 +15,6 @@ namespace dbDataSearch.Setup
 {
     public partial class FormSetupEntity : Form
     {
-        TSetupEntityCollection m_SetupEntityCollection;
-
         public FormSetupEntity()
         {
             InitializeComponent();
@@ -116,7 +114,7 @@ namespace dbDataSearch.Setup
             return entityCollection;
         }
 
-        private void SaveSetup()
+        private void SaveDefaultSetup()
         {
             string path = Application.StartupPath;
             IEntityConfig entityConfig = new EntityConfig();
@@ -126,20 +124,34 @@ namespace dbDataSearch.Setup
             SetupRepository.SaveSetupEntityCollection(path, setupEntityCollection);
         }
 
+        private void SaveSettings()
+        {
+            string path = Application.StartupPath;
+            TSetupEntityCollection entityCol = new TSetupEntityCollection();
+            entityCol.EntityCollection = new List<TSetupEntity>();
+            foreach (TSetupEntity el in m_EntityName_BindingSource.List)
+            {
+                entityCol.EntityCollection.Add(el);
+            }
+
+            SetupRepository.SaveSetupEntityCollection(path, entityCol);
+        }
+
         private void FormSetupEntity_Load(object sender, EventArgs e)
         {
-            SaveSetup();
+            //SaveDefaultSetup();
 
             string path = Application.StartupPath;
-            m_SetupEntityCollection = SetupRepository.LoadSetupConnectionCollection(path);
+            var setupEntityCollection = SetupRepository.LoadSetupConnectionCollection(path);
 
-            m_EntityName_BindingSource.DataSource = m_SetupEntityCollection;
+            m_EntityName_BindingSource.DataSource = setupEntityCollection;
 
         }
 
         private void FormSetupEntity_FormClosing(object sender, FormClosingEventArgs e)
         {
             m_EntityName_BindingSource.EndEdit();
+            SaveSettings();
             DialogResult = DialogResult.Yes;
         }
     }
