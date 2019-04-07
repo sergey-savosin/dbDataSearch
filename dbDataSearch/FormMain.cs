@@ -81,6 +81,20 @@ namespace dbDataSearch
             FindEntityByTextBoxString();
         }
 
+        List<ComponentFactory.Krypton.Toolkit.KryptonDataGridView> grids = new List<ComponentFactory.Krypton.Toolkit.KryptonDataGridView>();
+
+        private void CleanUpGrids(Control.ControlCollection conts)
+        {
+            for(int i=0; i<grids.Count; i++)
+            {
+                if (conts.Contains(grids[i]))
+                    conts.Remove(grids[i]);
+                grids[i].Dispose();
+                grids[i] = null;
+            }
+            grids.Clear();
+        }
+
         private void treeEntities_AfterSelect(object sender, TreeViewEventArgs e)
         {
             TTreeNodeData nodeData = e.Node.Tag as TTreeNodeData;
@@ -88,6 +102,28 @@ namespace dbDataSearch
             long entityKey = nodeData.EntityKey;
             DataTable data = entityRepository.GetEntityDetailsByKey(entityName, entityKey);
             gridEntityValues.DataSource = data;
+
+            this.SuspendLayout();
+            CleanUpGrids(kryptonHeaderGroupDataGridView.Panel.Controls);
+
+            for (int i = 0; i<3; i++)
+            {
+                var gridEntityValues1 = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
+                gridEntityValues1.Dock = System.Windows.Forms.DockStyle.Bottom;
+                gridEntityValues1.Location = new System.Drawing.Point(0, 0);
+                gridEntityValues1.Name = "gridEntityValues" + i.ToString();
+                //gridEntityValues1.Size = new System.Drawing.Size(528, 333);
+                gridEntityValues1.TabIndex = 0;
+                gridEntityValues1.AutoGenerateColumns = true;
+                gridEntityValues1.DataSource = data;
+                grids.Add(gridEntityValues1);
+
+                var h = kryptonHeaderGroupDataGridView;
+                h.Panel.Controls.Add(gridEntityValues1);
+
+            }
+
+            this.ResumeLayout();
         }
 
         private void textboxSearchString_KeyDown(object sender, KeyEventArgs e)
