@@ -38,7 +38,6 @@
             this.kryptonHeaderGroupTreeView = new ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup();
             this.treeEntities = new ComponentFactory.Krypton.Toolkit.KryptonTreeView();
             this.kryptonHeaderGroupDataGridView = new ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup();
-            this.gridEntityValues = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setupEntitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,6 +57,7 @@
             this.kryptonManagerMain = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
             this.kryptonPalette_Office2010_Black = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.kryptonPalette_Office2010_Blue = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
+            this.resultLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripContainerMain.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainerMain.ContentPanel.SuspendLayout();
             this.toolStripContainerMain.TopToolStripPanel.SuspendLayout();
@@ -81,7 +81,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.kryptonHeaderGroupDataGridView.Panel)).BeginInit();
             this.kryptonHeaderGroupDataGridView.Panel.SuspendLayout();
             this.kryptonHeaderGroupDataGridView.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridEntityValues)).BeginInit();
             this.menuStripMain.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -195,17 +194,9 @@
             // 
             // kryptonHeaderGroupDataGridView.Panel
             // 
-            this.kryptonHeaderGroupDataGridView.Panel.Controls.Add(this.gridEntityValues);
+            this.kryptonHeaderGroupDataGridView.Panel.Controls.Add(this.resultLayoutPanel);
             this.kryptonHeaderGroupDataGridView.Size = new System.Drawing.Size(530, 356);
             this.kryptonHeaderGroupDataGridView.TabIndex = 0;
-            // 
-            // gridEntityValues
-            // 
-            this.gridEntityValues.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridEntityValues.Location = new System.Drawing.Point(0, 0);
-            this.gridEntityValues.Name = "gridEntityValues";
-            this.gridEntityValues.Size = new System.Drawing.Size(528, 333);
-            this.gridEntityValues.TabIndex = 0;
             // 
             // menuStripMain
             // 
@@ -235,19 +226,19 @@
             this.setupEntitiesToolStripMenuItem.Name = "setupEntitiesToolStripMenuItem";
             this.setupEntitiesToolStripMenuItem.ShortcutKeyDisplayString = "F2";
             this.setupEntitiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.setupEntitiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setupEntitiesToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.setupEntitiesToolStripMenuItem.Text = "Setup entities";
             this.setupEntitiesToolStripMenuItem.Click += new System.EventHandler(this.setupEntitiesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(161, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -347,6 +338,19 @@
             // 
             this.kryptonPalette_Office2010_Black.BasePaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2007Black;
             // 
+            // resultLayoutPanel
+            // 
+            this.resultLayoutPanel.ColumnCount = 2;
+            this.resultLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.resultLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.resultLayoutPanel.Location = new System.Drawing.Point(3, 3);
+            this.resultLayoutPanel.Name = "resultLayoutPanel";
+            this.resultLayoutPanel.RowCount = 2;
+            this.resultLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.resultLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.resultLayoutPanel.Size = new System.Drawing.Size(522, 327);
+            this.resultLayoutPanel.TabIndex = 0;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,7 +388,6 @@
             this.kryptonHeaderGroupDataGridView.Panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonHeaderGroupDataGridView)).EndInit();
             this.kryptonHeaderGroupDataGridView.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridEntityValues)).EndInit();
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.toolStripMain.ResumeLayout(false);
@@ -415,7 +418,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup kryptonHeaderGroupTreeView;
         private ComponentFactory.Krypton.Toolkit.KryptonTreeView treeEntities;
         private ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup kryptonHeaderGroupDataGridView;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridView gridEntityValues;
         private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManagerMain;
         private ComponentFactory.Krypton.Toolkit.KryptonPalette kryptonPalette_Office2010_Black;
         private ComponentFactory.Krypton.Toolkit.KryptonPalette kryptonPalette_Office2010_Blue;
@@ -423,6 +425,7 @@
         private System.Windows.Forms.ToolStripMenuItem setupEntitiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel resultLayoutPanel;
     }
 }
 

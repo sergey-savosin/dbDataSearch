@@ -81,46 +81,45 @@ namespace dbDataSearch
             FindEntityByTextBoxString();
         }
 
-        List<ComponentFactory.Krypton.Toolkit.KryptonDataGridView> grids = new List<ComponentFactory.Krypton.Toolkit.KryptonDataGridView>();
-
-        private void CleanUpGrids(Control.ControlCollection conts)
-        {
-            for(int i=0; i<grids.Count; i++)
-            {
-                if (conts.Contains(grids[i]))
-                    conts.Remove(grids[i]);
-                grids[i].Dispose();
-                grids[i] = null;
-            }
-            grids.Clear();
-        }
-
         private void treeEntities_AfterSelect(object sender, TreeViewEventArgs e)
         {
             TTreeNodeData nodeData = e.Node.Tag as TTreeNodeData;
             string entityName = nodeData.EntityName;
             long entityKey = nodeData.EntityKey;
             DataTable data = entityRepository.GetEntityDetailsByKey(entityName, entityKey);
-            gridEntityValues.DataSource = data;
 
             this.SuspendLayout();
-            CleanUpGrids(kryptonHeaderGroupDataGridView.Panel.Controls);
-
-            for (int i = 0; i<3; i++)
+            // clear controls
+            for (int i = 0; i<resultLayoutPanel.Controls.Count; i++)
             {
-                var gridEntityValues1 = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
-                gridEntityValues1.Dock = System.Windows.Forms.DockStyle.Bottom;
-                gridEntityValues1.Location = new System.Drawing.Point(0, 0);
-                gridEntityValues1.Name = "gridEntityValues" + i.ToString();
-                //gridEntityValues1.Size = new System.Drawing.Size(528, 333);
-                gridEntityValues1.TabIndex = 0;
-                gridEntityValues1.AutoGenerateColumns = true;
-                gridEntityValues1.DataSource = data;
-                grids.Add(gridEntityValues1);
+                DataGridView d = resultLayoutPanel.Controls[0] as DataGridView;
+                d.Dispose();
+            }
+            resultLayoutPanel.Controls.Clear();
 
-                var h = kryptonHeaderGroupDataGridView;
-                h.Panel.Controls.Add(gridEntityValues1);
+            // create new result grids
+            const int gridCount = 2;
+            resultLayoutPanel.RowStyles.Clear();
+            resultLayoutPanel.ColumnCount = 1;
+            resultLayoutPanel.Dock = DockStyle.Fill;
+            resultLayoutPanel.RowCount = gridCount;
+            for (int i = 0; i<gridCount; i++)
+            {
+                var grid = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
+                grid.Dock = DockStyle.Fill;
+                grid.Location = new Point(0, 0);
+                grid.Name = "gridEntityValues" + i.ToString();
+                grid.TabIndex = 0;
+                grid.AutoGenerateColumns = true;
+                grid.DataSource = data;
 
+                RowStyle rs;
+                if (i == 0)
+                    rs = new RowStyle(SizeType.AutoSize);
+                else
+                    rs = new RowStyle(SizeType.Percent, 30);
+                resultLayoutPanel.RowStyles.Add(rs);
+                resultLayoutPanel.Controls.Add(grid);
             }
 
             this.ResumeLayout();
